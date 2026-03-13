@@ -1,6 +1,7 @@
 ;;; gptel-unit-tests.el --- Gptel Unit Tests  -*- lexical-binding: t; -*-
 (require 'ert)
 (require 'gptel)
+(require 'gptel-openai)
 
 (defmacro setup (&rest body)
   `(let ((gptel-prompt-prefix-alist
@@ -54,6 +55,80 @@
                            " \n\tFOO  "
                            (gptel-response-prefix-string)
                            " \n\t"))))))
+
+(ert-deftest gptel-test-openai-chatgpt-login-uses-configured-client-id ()
+  (let ((backend (gptel-make-openai-chatgpt "chatgpt-login-test"))
+        requests
+        prompts
+        opened-url)
+    (unwind-protect
+        (cl-letf (((symbol-function 'gptel--openai-chatgpt-request)
+                   (lambda (url data headers &optional form-encoded)
+                     (push (list url data headers form-encoded) requests)
+                     (cond
+                      ((string-suffix-p "/api/accounts/deviceauth/usercode" url)
+                       '(:status 200 :body (:device_auth_id "device-auth"
+                                             :user_code "CODE-1234"
+                                             :interval "1")))
+                      ((string-suffix-p "/api/accounts/deviceauth/token" url)
+                       '(:status 200 :body (:authorization_code "auth-code"
+                                             :code_verifier "code-verifier")))
+                      ((string-suffix-p "/oauth/token" url)
+                       '(:status 200 :body (:access_token "access-token"
+                                             :refresh_token "refresh-token"
+                                             :expires_in 3600)))
+                      (t (error "Unexpected URL: %s" url)))))
+                  ((symbol-function 'browse-url)
+                   (lambda (url &rest _args)
+                     (setq opened-url url)))
+                  ((symbol-function 'read-from-minibuffer)
+                   (lambda (prompt &rest _args)
+                     (push prompt prompts)
+                     ""))
+                  ((symbol-function 'gui-set-selection)
+                   (lambda (&rest _args) nil))
+                  ((symbol-function 'gptel--openai-chatgpt-save-token)
+                   #'identity))
+          (let ((gptel-openai-chatgpt-client-id "app_test_client"))
+            (gptel-openai-chatgpt-login backend)))
+      (setf (alist-get "chatgpt-login-test" gptel--known-backends nil nil #'equal) nil))
+    (setq requests (nreverse requests)
+          prompts (nreverse prompts))
+    (should (equal opened-url "https://auth.openai.com/codex/device"))
+    (should (string-match-p "return to Emacs and press ENTER" (car prompts)))
+    (should (string-match-p "ignore it and close the tab" (car prompts)))
+    (should (equal (plist-get (cadr (nth 0 requests)) :client_id)
+                   "app_test_client"))
+    (should (equal (alist-get "client_id" (cadr (nth 2 requests)) nil nil #'equal)
+                   "app_test_client"))))
+
+(ert-deftest gptel-test-openai-chatgpt-refresh-uses-configured-client-id ()
+  (let ((backend (gptel-make-openai-chatgpt "chatgpt-refresh-test"))
+        request)
+    (unwind-protect
+        (progn
+          (setf (gptel-openai-chatgpt-token backend)
+                '(:refresh_token "refresh-token"))
+          (cl-letf (((symbol-function 'gptel--openai-chatgpt-request)
+                     (lambda (url data headers &optional form-encoded)
+                       (setq request (list url data headers form-encoded))
+                       '(:status 200 :body (:access_token "access-token"
+                                             :expires_in 3600))))
+                    ((symbol-function 'gptel--openai-chatgpt-save-token)
+                     #'identity))
+            (let ((gptel-openai-chatgpt-client-id "app_test_client"))
+              (gptel--openai-chatgpt-refresh-token backend))))
+      (setf (alist-get "chatgpt-refresh-test" gptel--known-backends nil nil #'equal) nil))
+    (should (equal (car request) "https://auth.openai.com/oauth/token"))
+    (should (equal (alist-get "client_id" (cadr request) nil nil #'equal)
+                   "app_test_client"))
+    (should (eq (cadddr request) t))))
+
+(ert-deftest gptel-test-openai-chatgpt-backend-forces-streaming ()
+  (let ((backend (gptel-make-openai-chatgpt "chatgpt-stream-test" :stream nil)))
+    (unwind-protect
+        (should (eq (gptel-backend-stream backend) t))
+      (setf (alist-get "chatgpt-stream-test" gptel--known-backends nil nil #'equal) nil))))
 
 ;;; Tests for media parsing in buffers: `gptel--parse-media-links'
 (ert-deftest gptel-test-media-link-parsing-org-1 ()
