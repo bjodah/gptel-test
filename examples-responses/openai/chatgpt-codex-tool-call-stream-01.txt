@@ -1,0 +1,38 @@
+event: response.created
+data: {"type":"response.created","response":{"id":"resp_0f3dd940c52575c40169b4a482f20081919c7a6f5f0d5536c0","object":"response","created_at":1773446274,"status":"in_progress","background":false,"completed_at":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":"You are a large language model living in Emacs and a helpful assistant. Respond concisely.","max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5.4","output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":"05162029-47cc-46e1-a491-6ac48e6c1e1a","prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":"user-mVzTayzQyqITD88bcHNbwfHi","service_tier":"auto","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[{"type":"function","description":"Return the input text unchanged.","name":"echo_text","parameters":{"type":"object","properties":{"text":{"type":"string","description":"Text to echo back."}},"required":["text"],"additionalProperties":false},"strict":true}],"top_logprobs":0,"top_p":0.98,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":0}
+
+event: response.in_progress
+data: {"type":"response.in_progress","response":{"id":"resp_0f3dd940c52575c40169b4a482f20081919c7a6f5f0d5536c0","object":"response","created_at":1773446274,"status":"in_progress","background":false,"completed_at":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":"You are a large language model living in Emacs and a helpful assistant. Respond concisely.","max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5.4","output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":"05162029-47cc-46e1-a491-6ac48e6c1e1a","prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":"user-mVzTayzQyqITD88bcHNbwfHi","service_tier":"auto","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[{"type":"function","description":"Return the input text unchanged.","name":"echo_text","parameters":{"type":"object","properties":{"text":{"type":"string","description":"Text to echo back."}},"required":["text"],"additionalProperties":false},"strict":true}],"top_logprobs":0,"top_p":0.98,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":1}
+
+event: response.output_item.added
+data: {"type":"response.output_item.added","item":{"id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","type":"function_call","status":"in_progress","arguments":"","call_id":"call_UdIVO5T01fxPEpTiwA5Ir7hf","name":"echo_text"},"output_index":0,"sequence_number":2}
+
+event: response.function_call_arguments.delta
+data: {"type":"response.function_call_arguments.delta","delta":"{\"","item_id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","obfuscation":"sBEpJo988EU2Bi","output_index":0,"sequence_number":3}
+
+event: response.function_call_arguments.delta
+data: {"type":"response.function_call_arguments.delta","delta":"text","item_id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","obfuscation":"CJf0KN3uLqoN","output_index":0,"sequence_number":4}
+
+event: response.function_call_arguments.delta
+data: {"type":"response.function_call_arguments.delta","delta":"\":\"","item_id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","obfuscation":"GMKR7FcJHh7Kh","output_index":0,"sequence_number":5}
+
+event: response.function_call_arguments.delta
+data: {"type":"response.function_call_arguments.delta","delta":"tool","item_id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","obfuscation":"cvEV8J3T4KHi","output_index":0,"sequence_number":6}
+
+event: response.function_call_arguments.delta
+data: {"type":"response.function_call_arguments.delta","delta":" call","item_id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","obfuscation":"RHKXYqSFE3C","output_index":0,"sequence_number":7}
+
+event: response.function_call_arguments.delta
+data: {"type":"response.function_call_arguments.delta","delta":" success","item_id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","obfuscation":"4f70q49r","output_index":0,"sequence_number":8}
+
+event: response.function_call_arguments.delta
+data: {"type":"response.function_call_arguments.delta","delta":"\"}","item_id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","obfuscation":"OQLlhsH3oGNvS5","output_index":0,"sequence_number":9}
+
+event: response.function_call_arguments.done
+data: {"type":"response.function_call_arguments.done","arguments":"{\"text\":\"tool call success\"}","item_id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","output_index":0,"sequence_number":10}
+
+event: response.output_item.done
+data: {"type":"response.output_item.done","item":{"id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","type":"function_call","status":"completed","arguments":"{\"text\":\"tool call success\"}","call_id":"call_UdIVO5T01fxPEpTiwA5Ir7hf","name":"echo_text"},"output_index":0,"sequence_number":11}
+
+event: response.completed
+data: {"type":"response.completed","response":{"id":"resp_0f3dd940c52575c40169b4a482f20081919c7a6f5f0d5536c0","object":"response","created_at":1773446274,"status":"completed","background":false,"completed_at":1773446275,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":"You are a large language model living in Emacs and a helpful assistant. Respond concisely.","max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5.4","output":[{"id":"fc_0f3dd940c52575c40169b4a48398e08191ae6c825f73cc4479","type":"function_call","status":"completed","arguments":"{\"text\":\"tool call success\"}","call_id":"call_UdIVO5T01fxPEpTiwA5Ir7hf","name":"echo_text"}],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":"05162029-47cc-46e1-a491-6ac48e6c1e1a","prompt_cache_retention":null,"reasoning":{"effort":"none","summary":null},"safety_identifier":"user-mVzTayzQyqITD88bcHNbwfHi","service_tier":"default","store":false,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[{"type":"function","description":"Return the input text unchanged.","name":"echo_text","parameters":{"type":"object","properties":{"text":{"type":"string","description":"Text to echo back."}},"required":["text"],"additionalProperties":false},"strict":true}],"top_logprobs":0,"top_p":0.98,"truncation":"disabled","usage":{"input_tokens":110,"input_tokens_details":{"cached_tokens":0},"output_tokens":20,"output_tokens_details":{"reasoning_tokens":0},"total_tokens":130},"user":null,"metadata":{}},"sequence_number":12}
